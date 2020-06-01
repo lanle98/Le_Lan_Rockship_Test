@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal @modal="modalStatus" v-if="modal" />
+    <CreateNew @modal="modalStatus" v-if="modal" />
     <div class="row container m-auto text-left">
       <div @click="()=> modal = !modal" class="wrapper p-3 col-lg-3 m-0 col-md-4">
         <div class="p-0 shadow rounded album-item">
@@ -59,10 +59,10 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Modal from "./Modal";
+import CreateNew from "./CreateNew";
 export default {
   name: "AlbumList",
-  components: { Modal },
+  components: { CreateNew },
   data() {
     return {
       modal: false
