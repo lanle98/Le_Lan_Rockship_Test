@@ -1,7 +1,8 @@
 <template>
   <div>
+    <Modal @modal="modalStatus" v-if="modal" />
     <div class="row container m-auto text-left">
-      <div class="album-wrapper p-3 col-lg-3 m-0 col-md-4">
+      <div @click="()=> modal = !modal" class="wrapper p-3 col-lg-3 m-0 col-md-4">
         <div class="p-0 shadow rounded album-item">
           <div
             class="thumbnail bg-secondary rounded-top d-flex justify-content-center align-items-center"
@@ -13,19 +14,41 @@
           </div>
         </div>
       </div>
-      <div class="album-wrapper p-3 col-lg-3 m-0 col-md-4" :key="item.id" v-for="item in list">
+      <div class="wrapper p-3 col-lg-3 m-0 col-md-4" :key="item.id" v-for="item in allAlbums">
         <div class="p-0 shadow rounded album-item">
-          <div class="thumbnail rounded-top">
-            <img class="img-fluid" src="../assets/thumbnail_1.jpg" />
-          </div>
-          <div class="album-info p-3">
-            <div class="title">
-              <h3 class="h5">English October Learning Journey</h3>
-              <span>12 photos, 2 videos</span>
+          <router-link :to="item.id.toString()">
+            <div class="thumbnail rounded-top">
+              <img class="img-fluid" :src="item.image" />
             </div>
+            <div class="album-info p-3">
+              <div class="title">
+                <h3 class="h5">{{item.title}}</h3>
+                <span>{{item.detail}}</span>
+              </div>
+            </div>
+          </router-link>
+          <div class="love-icon-wrapper my-auto">
             <div class="love-icon border-top pt-3">
-              <i v-if="item.isFavorite" class="fas fa-heart h3"></i>
-              <i v-else class="far fa-heart h3"></i>
+              <i
+                @click="toggleFavorite({
+              id:item.id,
+              title: item.title,
+              image: item.image,
+              isFavorite: !item.isFavorite
+              })"
+                v-if="item.isFavorite"
+                class="fas fa-heart h3 m-0"
+              ></i>
+              <i
+                @click="toggleFavorite({
+              id:item.id,
+              title: item.title,
+              image: item.image,
+              isFavorite: !item.isFavorite
+              })"
+                v-else
+                class="far fa-heart h3 m-0"
+              ></i>
             </div>
           </div>
         </div>
@@ -35,55 +58,44 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import Modal from "./Modal";
 export default {
   name: "AlbumList",
+  components: { Modal },
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          title: "English October Learning Journey",
-          isFavorite: false,
-          thumbnail: "thumbnail_1.jpg",
-          detail: "12 photos, 2 videos"
-        },
-        {
-          id: 2,
-          title: "English October Learning Journey",
-          isFavorite: true,
-          thumbnail: "thumbnail_1.jpg",
-          detail: "12 photos, 2 videos"
-        },
-        {
-          id: 3,
-          title: "English October Learning Journey",
-          isFavorite: false,
-          thumbnail: "thumbnail_1.jpg",
-          detail: "12 photos, 2 videos"
-        },
-        {
-          id: 4,
-          title: "English October Learning Journey",
-          isFavorite: true,
-          thumbnail: "thumbnail_1.jpg",
-          detail: "12 photos, 2 videos"
-        },
-        {
-          id: 5,
-          title: "English October Learning Journey",
-          isFavorite: false,
-          thumbnail: "thumbnail_1.jpg",
-          detail: "12 photos, 2 videos"
-        }
-      ]
+      modal: false
     };
+  },
+  computed: { ...mapGetters(["allAlbums"]) },
+  methods: {
+    ...mapActions(["fetchAlbums", "toggleFavorite"]),
+    modalStatus() {
+      this.modal = !this.modal;
+    }
+  },
+  created() {
+    this.fetchAlbums();
   }
 };
 </script>
 
 <style scoped>
+a {
+  color: #434343;
+  text-decoration: none;
+}
+
+.wrapper:hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
 .album-item {
   border-radius: 0.5em;
+  position: relative;
 }
 
 .thumbnail {
@@ -101,6 +113,17 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.love-icon-wrapper {
+  position: absolute;
+  bottom: 1em;
+  width: 100%;
+  padding: 0 1em 0 1em;
+}
+
+i {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 768px) {
