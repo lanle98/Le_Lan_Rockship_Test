@@ -58,11 +58,12 @@ export default {
       newAlbum: {
         image: null,
         title: "",
-        isFavorite: 0
+        isFavorite: false
       },
       message: ""
     };
   },
+
   methods: {
     ...mapActions(["createNewAlbum"]),
     closeModal() {
@@ -107,6 +108,7 @@ export default {
         this.message = "The extension is not accepted";
       }
     },
+
     handleCreateAlbum() {
       if (this.newAlbum.image !== null && this.newAlbum.title !== "") {
         this.createNewAlbum(this.newAlbum);

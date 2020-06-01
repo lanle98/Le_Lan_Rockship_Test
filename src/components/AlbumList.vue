@@ -27,8 +27,8 @@
               </div>
             </div>
           </router-link>
-          <div class="love-icon-wrapper my-auto">
-            <div class="love-icon border-top pt-3">
+          <div class="favorite-icon-wrapper my-auto">
+            <div class="favorite-icon border-top pt-3">
               <i
                 @click="toggleFavorite({
               id:item.id,
@@ -37,7 +37,7 @@
               isFavorite: !item.isFavorite
               })"
                 v-if="item.isFavorite"
-                class="fas fa-heart h3 m-0"
+                class="fas fa-star h3 m-0 float-right"
               ></i>
               <i
                 @click="toggleFavorite({
@@ -47,7 +47,7 @@
               isFavorite: !item.isFavorite
               })"
                 v-else
-                class="far fa-heart h3 m-0"
+                class="far fa-star h3 m-0 float-right"
               ></i>
             </div>
           </div>
@@ -115,7 +115,7 @@ img {
   justify-content: space-between;
 }
 
-.love-icon-wrapper {
+.favorite-icon-wrapper {
   position: absolute;
   bottom: 1em;
   width: 100%;

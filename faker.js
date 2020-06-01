@@ -11,7 +11,7 @@ function generateData() {
             "id": id,
             "title": title,
             "image": image,
-            "isFavorite": 0
+            "isFavorite": false
         })
     }
 
