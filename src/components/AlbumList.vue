@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CreateNew @modal="modalStatus" v-if="modal" />
+    <CreateNew dialogStatus="album" @modal="modalStatus" v-if="modal" />
     <div class="row container m-auto text-left">
       <div @click="()=> modal = !modal" class="wrapper p-3 col-lg-3 m-0 col-md-4">
         <div class="p-0 shadow rounded album-item">
@@ -23,32 +23,18 @@
             <div class="album-info p-3">
               <div class="title">
                 <h3 class="h5">{{item.title}}</h3>
-                <span>{{item.detail}}</span>
+                <span></span>
               </div>
             </div>
           </router-link>
           <div class="favorite-icon-wrapper my-auto">
             <div class="favorite-icon border-top pt-3">
               <i
-                @click="toggleFavorite({
-              id:item.id,
-              title: item.title,
-              image: item.image,
-              isFavorite: !item.isFavorite
-              })"
+                @click="setFavorite(item)"
                 v-if="item.isFavorite"
                 class="fas fa-star h3 m-0 float-right"
               ></i>
-              <i
-                @click="toggleFavorite({
-              id:item.id,
-              title: item.title,
-              image: item.image,
-              isFavorite: !item.isFavorite
-              })"
-                v-else
-                class="far fa-star h3 m-0 float-right"
-              ></i>
+              <i @click="setFavorite(item)" v-else class="far fa-star h3 m-0 float-right"></i>
             </div>
           </div>
         </div>
@@ -60,6 +46,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CreateNew from "./CreateNew";
+
 export default {
   name: "AlbumList",
   components: { CreateNew },
@@ -70,12 +57,29 @@ export default {
   },
   computed: { ...mapGetters(["allAlbums"]) },
   methods: {
-    ...mapActions(["fetchAlbums", "toggleFavorite"]),
+    // get store actions
+    ...mapActions(["fetchAlbums", "toggleFavorite", "fetchPhotos"]),
+
+    //  close modal
     modalStatus() {
       this.modal = !this.modal;
+    },
+
+    //toggle favorite icon
+    setFavorite(item) {
+      const data = {
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        isFavorite: !item.isFavorite
+      };
+
+      this.toggleFavorite(data);
     }
   },
+
   created() {
+    //  get all albums
     this.fetchAlbums();
   }
 };
@@ -122,8 +126,9 @@ img {
   padding: 0 1em 0 1em;
 }
 
-i {
+.fa-star {
   cursor: pointer;
+  color: rgb(255, 225, 0);
 }
 
 @media only screen and (min-width: 768px) {
