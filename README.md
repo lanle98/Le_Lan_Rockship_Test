@@ -1,5 +1,6 @@
 # Rockship Test
-This is a test for the Front-end Developer position at Rockship. Users are albe to see albums, create new album, mark as favorite and create new photos inside the album.
+This is a test for the Front-end Developer position at Rockship.
+Users visit the site are able to see albums, create new album, mark as favorite and create new photos inside the album.
 The project implemented VueJS as the front-end framework, VueX as the state management, and json-server as the fake REST API. 
 
 ### Set up
