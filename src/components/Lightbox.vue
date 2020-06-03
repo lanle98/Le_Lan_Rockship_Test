@@ -22,17 +22,12 @@
 
             <div class="tag pb-3">
               <h4>Tag</h4>
-              <select class="w-100 border-white" name="cars">
-                <option value="volvo">Volvo</option>
-                <option value="saab">Saab</option>
-                <option value="fiat">Fiat</option>
-                <option value="audi">Audi</option>
-              </select>
+              <select class="w-100 border-white" name="tags"></select>
             </div>
           </div>
           <div class="modal-footer">
             <div @click="closeLightbox" class="btn btn-secondary">Close</div>
-            <div class="btn btn-primary">Save changes</div>
+            <div @click="closeLightbox" class="btn btn-primary">Save changes</div>
           </div>
         </div>
       </div>

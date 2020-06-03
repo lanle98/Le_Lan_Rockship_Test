@@ -69,6 +69,7 @@ export default {
   },
 
   mounted() {
+    //  check dialog status
     this.$props.dialogStatus == "album"
       ? (this.header = "Create New Album")
       : (this.header = "Add Photo");
@@ -76,6 +77,7 @@ export default {
 
   methods: {
     ...mapActions(["createNewAlbum", "addPhoto"]),
+
     closeModal() {
       this.$emit("modal", false);
     },
@@ -93,6 +95,7 @@ export default {
         "PNG",
         "JPG"
       ];
+
       //  check if jpg or png
       if (accecpted_extension.indexOf(file_extension) !== -1) {
         const reader = new FileReader();
@@ -112,6 +115,7 @@ export default {
           false
         );
 
+        //  reset message
         this.message = "";
       } else {
         //  reset input
@@ -139,7 +143,7 @@ export default {
           this.$emit("modal", false);
         } else {
           // show message
-          this.message = "Please fill in the required fields";
+          this.message = "Please upload the photo";
         }
       }
     }
