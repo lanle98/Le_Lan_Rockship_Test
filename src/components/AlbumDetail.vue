@@ -1,7 +1,8 @@
 <template>
   <div class="row container m-auto">
+    <Lightbox v-if="lightbox" @lightbox="lightboxStatus" />
     <CreateNew dialogStatus="photo" @modal="modalStatus" v-if="modal" />
-    <div class="photo-wrapper p-3 col-lg-3 m-0 col-md-4" @click="()=> modal = !modal">
+    <div class="wrapper p-3 col-lg-3 m-0 col-md-4" @click="()=> modal = !modal">
       <div class="p-0 shadow photo-item">
         <div
           class="thumbnail add-photo bg-secondary d-flex justify-content-center align-items-center"
@@ -15,11 +16,9 @@
     </div>
     <div class="wrapper p-3 col-lg-3 m-0 col-md-4" :key="item.id" v-for="item in getPhotos">
       <div class="p-0 shadow rounded photo-item">
-        <router-link :to="'aaa' +item.id.toString()">
-          <div class="thumbnail rounded-top">
-            <img class="img-fluid" :src="item.image" />
-          </div>
-        </router-link>
+        <div class="h-100" @click="handleLightbox(item)">
+          <img class="img-fluid rounded-top" :src="item.image" />
+        </div>
         <div class="bottom-wrapper my-auto">
           <div class="heart-icon">
             <i @click="setLike(item)" v-if="item.isFavorite" class="fas fa-heart h3 m-0 float-left"></i>
@@ -34,12 +33,14 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import CreateNew from "./CreateNew";
+import Lightbox from "./Lightbox";
 export default {
   name: "AlbumDetail",
-  components: { CreateNew },
+  components: { CreateNew, Lightbox },
   data() {
     return {
-      modal: false
+      modal: false,
+      lightbox: false
     };
   },
   computed: mapGetters(["getPhotos"]),
@@ -49,11 +50,22 @@ export default {
   },
   methods: {
     //  get store actions
-    ...mapActions(["fetchPhotos", "toggleLike"]),
+    ...mapActions(["fetchPhotos", "toggleLike", "openLightbox"]),
 
     //  close modal
     modalStatus() {
       this.modal = !this.modal;
+    },
+
+    //handle open Lightbox
+    handleLightbox(item) {
+      this.lightbox = !this.lightbox;
+      this.openLightbox(item.id);
+    },
+
+    //  close Lightbox
+    lightboxStatus() {
+      this.lightbox = !this.lightbox;
     },
 
     //  toggle like icon
@@ -87,15 +99,15 @@ a {
 .photo-item {
   border-radius: 0.5em;
   position: relative;
-  height: 250px;
-  width: 250px;
+  height: 200px;
+  width: 100%;
   overflow: hidden;
 }
 
 img {
   object-fit: cover;
   object-position: center;
-  width: 100%;
+  height: 100%;
 }
 
 .bottom-wrapper {
@@ -111,10 +123,17 @@ img {
 
 .fa-heart {
   cursor: pointer;
-  color: white;
+  color: rgb(254, 38, 74);
 }
 
 .add-photo {
   height: 80%;
+}
+
+@media only screen and (min-width: 768px) {
+  .photo-item {
+    width: 200px;
+    height: 200px;
+  }
 }
 </style>

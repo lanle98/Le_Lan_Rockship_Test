@@ -23,7 +23,7 @@
             <div class="album-info p-3">
               <div class="title">
                 <h3 class="h5">{{item.title}}</h3>
-                <span>{{item.detail}}</span>
+                <span></span>
               </div>
             </div>
           </router-link>
@@ -46,6 +46,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CreateNew from "./CreateNew";
+
 export default {
   name: "AlbumList",
   components: { CreateNew },
@@ -57,7 +58,7 @@ export default {
   computed: { ...mapGetters(["allAlbums"]) },
   methods: {
     // get store actions
-    ...mapActions(["fetchAlbums", "toggleFavorite"]),
+    ...mapActions(["fetchAlbums", "toggleFavorite", "fetchPhotos"]),
 
     //  close modal
     modalStatus() {
@@ -76,6 +77,7 @@ export default {
       this.toggleFavorite(data);
     }
   },
+
   created() {
     //  get all albums
     this.fetchAlbums();
@@ -124,8 +126,9 @@ img {
   padding: 0 1em 0 1em;
 }
 
-i {
+.fa-star {
   cursor: pointer;
+  color: rgb(255, 225, 0);
 }
 
 @media only screen and (min-width: 768px) {
